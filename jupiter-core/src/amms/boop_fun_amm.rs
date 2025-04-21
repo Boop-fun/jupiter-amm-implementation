@@ -6,6 +6,7 @@ use solana_sdk::pubkey;
 use solana_sdk::pubkey::Pubkey;
 
 pub const BOOP_FUN_PROGRAM: Pubkey = pubkey!("boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4");
+pub const SOL_MINT: Pubkey = pubkey!("So11111111111111111111111111111111111111112");
 
 pub struct BoopFunAmm {
     key: Pubkey,
@@ -47,5 +48,9 @@ impl BoopFunAmm {
 
     fn key(&self) -> Pubkey {
         self.key
+    }
+
+    fn get_reserve_mints(&self) -> Vec<Pubkey> {
+        vec![self.bonding_curve.mint, SOL_MINT]
     }
 }
