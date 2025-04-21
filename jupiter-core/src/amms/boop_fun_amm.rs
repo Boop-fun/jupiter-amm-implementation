@@ -2,11 +2,14 @@ use anyhow::Result;
 use bincode::deserialize;
 use serde::{Serialize, Deserialize};
 use jupiter_amm_interface::{AccountMap, Amm, AmmContext, KeyedAccount};
+use solana_sdk::native_token::LAMPORTS_PER_SOL;
 use solana_sdk::pubkey;
 use solana_sdk::pubkey::Pubkey;
 
 pub const BOOP_FUN_PROGRAM: Pubkey = pubkey!("boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4");
 pub const SOL_MINT: Pubkey = pubkey!("So11111111111111111111111111111111111111112");
+// 1 billion tokens
+pub const TOKEN_TOTAL_SUPPLY: u64 = 1_000_000_000_000_000_000;
 
 pub struct BoopFunAmm {
     key: Pubkey,
@@ -27,6 +30,66 @@ pub struct BondingCurve {
     pub swap_fee_basis_points: u8,
     pub token_for_stakers_basis_points: u16,
     pub status: u8,
+}
+
+impl BondingCurve {
+  pub fn calculate_token_amount_out(&self, sol_amount: u64) -> u64 {
+      let scaling_factor = (self.damping_term as u128)
+          .checked_mul(self.virtual_token_reserves as u128)
+          .unwrap()
+          .checked_mul(LAMPORTS_PER_SOL as u128)
+          .unwrap();
+
+      let initial_sol = (self.virtual_sol_reserves as u128)
+          .checked_add(self.sol_reserves as u128)
+          .unwrap();
+
+      let amount_out = scaling_factor
+          .checked_div(initial_sol)
+          .unwrap()
+          .checked_sub(
+              scaling_factor
+                  .checked_div(initial_sol.checked_add(sol_amount as u128).unwrap())
+                  .unwrap(),
+          )
+          .unwrap();
+
+      amount_out as u64
+  }
+
+  pub fn calculate_sol_amount_out(&self, token_amount: u64) -> u64 {
+      let scaling_factor = (self.damping_term as u128)
+          .checked_mul(self.virtual_token_reserves as u128)
+          .unwrap()
+          .checked_mul(LAMPORTS_PER_SOL as u128)
+          .unwrap();
+
+      let tokens_issued = TOKEN_TOTAL_SUPPLY.checked_sub(self.token_reserves).unwrap() as u128;
+
+      let base_denominator = (self.virtual_token_reserves as u128)
+          .checked_sub(tokens_issued)
+          .unwrap();
+
+      let amount_out = scaling_factor
+          .checked_div(base_denominator)
+          .unwrap()
+          .checked_sub(
+              scaling_factor
+                  .checked_div(base_denominator.checked_add(token_amount as u128).unwrap())
+                  .unwrap(),
+          )
+          .unwrap();
+
+      amount_out as u64
+  }
+
+  pub fn calculate_swap_fee(&self, amount: u64) -> u64 {
+    amount
+        .checked_mul(self.swap_fee_basis_points as u64)
+        .unwrap()
+        .checked_div(10_000)
+        .unwrap()
+  }
 }
 
 // TODO: impl Amm for BoopFunAmm
