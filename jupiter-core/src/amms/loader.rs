@@ -5,6 +5,7 @@ use jupiter_amm_interface::{Amm, AmmContext, KeyedAccount};
 use solana_sdk::pubkey::Pubkey;
 
 use super::spl_token_swap_amm::{SplTokenSwapAmm, SPL_TOKEN_SWAP_PROGRAMS};
+use super::boop_fun_amm::{BoopFunAmm, BOOP_FUN_PROGRAM};
 
 pub fn amm_factory(
     keyed_account: &KeyedAccount,
@@ -19,6 +20,11 @@ pub fn amm_factory(
             keyed_account,
             amm_context,
         )?))
+    // } else if owner == BOOP_FUN_PROGRAM {
+    //     Ok(Box::new(BoopFunAmm::from_keyed_account(
+    //         keyed_account,
+    //         amm_context,
+    //     )?))
     } else {
         Err(anyhow!(
             "Unsupported pool {}, from owner {}",
