@@ -13,4 +13,9 @@ impl BoopFunAmm {
     fn from_keyed_account(keyed_account: &KeyedAccount, amm_context: &AmmContext) -> Result<Self> {
         Ok(BoopFunAmm { })
     }
+
+    fn label(&self) -> String {
+        "BoopFun".to_string()
+    }
+
 }
