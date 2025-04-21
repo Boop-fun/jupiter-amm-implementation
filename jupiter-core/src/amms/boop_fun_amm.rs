@@ -243,8 +243,8 @@ impl Amm for BoopFunAmm {
                 bonding_curve_vault: self.get_bonding_curve_vault(),
                 bonding_curve_sol_vault: self.get_bonding_curve_sol_vault(),
                 recipient_token_account: swap_params.destination_token_account,
-                buyer: swap_params.token_transfer_authority, // TODO: Is token_transfer_authority the Signer?
-                // pub recipient: Pubkey,
+                buyer: swap_params.token_transfer_authority,
+                recipient: swap_params.token_transfer_authority,
                 config: self.get_config(),
                 vault_authority: self.get_vault_authority(),
                 wsol: SOL_MINT,
@@ -265,8 +265,8 @@ impl Amm for BoopFunAmm {
                 bonding_curve_vault: self.get_bonding_curve_vault(),
                 bonding_curve_sol_vault: self.get_bonding_curve_sol_vault(),
                 seller_token_account: swap_params.source_token_account,
-                seller: swap_params.token_transfer_authority, // TODO: Is token_transfer_authority the Signer?
-                // pub recipient: Pubkey,
+                seller: swap_params.token_transfer_authority,
+                recipient: swap_params.token_transfer_authority,
                 config: self.get_config(),
                 vault_authority: self.get_vault_authority(),
                 wsol: SOL_MINT,
