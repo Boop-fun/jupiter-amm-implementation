@@ -53,4 +53,8 @@ impl BoopFunAmm {
     fn get_reserve_mints(&self) -> Vec<Pubkey> {
         vec![self.bonding_curve.mint, SOL_MINT]
     }
+
+    fn get_accounts_to_update(&self) -> Vec<Pubkey> {
+        vec![self.key]
+    }
 }
