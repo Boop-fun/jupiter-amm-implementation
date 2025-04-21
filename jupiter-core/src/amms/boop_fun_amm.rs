@@ -1,4 +1,6 @@
 use anyhow::Result;
+use bincode::deserialize;
+use serde::{Serialize, Deserialize};
 use jupiter_amm_interface::{Amm, AmmContext, KeyedAccount};
 use solana_sdk::pubkey;
 use solana_sdk::pubkey::Pubkey;
@@ -7,12 +9,32 @@ pub const BOOP_FUN_PROGRAM: Pubkey = pubkey!("boop8hVGQGqehUK2iVEMEnMrL5RbjywRzH
 
 pub struct BoopFunAmm {
     key: Pubkey,
+    bonding_curve: BondingCurve,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct BondingCurve {
+    pub creator: Pubkey,
+    pub mint: Pubkey,
+    pub virtual_sol_reserves: u64,
+    pub virtual_token_reserves: u64,
+    pub graduation_target: u64,
+    pub graduation_fee: u64,
+    pub sol_reserves: u64,
+    pub token_reserves: u64,
+    pub damping_term: u8,
+    pub swap_fee_basis_points: u8,
+    pub token_for_stakers_basis_points: u16,
+    pub status: u8,
 }
 
 // TODO: impl Amm for BoopFunAmm
 impl BoopFunAmm {
     fn from_keyed_account(keyed_account: &KeyedAccount, amm_context: &AmmContext) -> Result<Self> {
-        Ok(BoopFunAmm { key: keyed_account.key })
+        // First 8 bytes are the discriminator
+        let byte_array = &keyed_account.account.data[8..];
+        let bonding_curve: BondingCurve = deserialize(byte_array).unwrap();
+        Ok(BoopFunAmm { key: keyed_account.key, bonding_curve })
     }
 
     fn label(&self) -> String {
