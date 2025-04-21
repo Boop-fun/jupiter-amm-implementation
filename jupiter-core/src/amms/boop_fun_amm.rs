@@ -234,7 +234,7 @@ impl Amm for BoopFunAmm {
 
       if source_mint == SOL_MINT && destination_mint == bonding_curve_mint {
         Ok(SwapAndAccountMetas {
-            // swap: Swap::BoopFunBuyToken,
+            // TODO: swap: Swap::BoopFunBuyToken,
             swap: Swap::TokenSwap,
             account_metas: BoopFunBuyToken {
                 mint: self.bonding_curve.mint,
@@ -256,7 +256,7 @@ impl Amm for BoopFunAmm {
         })
       } else if source_mint == bonding_curve_mint && destination_mint == SOL_MINT {
         Ok(SwapAndAccountMetas {
-            // swap: Swap::BoopFunSellToken,
+            // TODO: swap: Swap::BoopFunSellToken,
             swap: Swap::TokenSwap,
             account_metas: BoopFunSellToken {
                 mint: self.bonding_curve.mint,
