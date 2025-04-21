@@ -8,7 +8,7 @@ use solana_sdk::pubkey;
 use solana_sdk::pubkey::Pubkey;
 use solana_sdk::system_program::ID as SYSTEM_PROGRAM_ID;
 
-use super::account_meta_from_boop_fun::BoopFunBuyToken;
+use super::account_meta_from_boop_fun::{BoopFunBuyToken, BoopFunSellToken};
 
 pub const BOOP_FUN_PROGRAM: Pubkey = pubkey!("boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4");
 pub const SOL_MINT: Pubkey = pubkey!("So11111111111111111111111111111111111111112");
