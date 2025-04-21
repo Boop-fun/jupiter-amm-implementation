@@ -20,11 +20,11 @@ pub fn amm_factory(
             keyed_account,
             amm_context,
         )?))
-    // } else if owner == BOOP_FUN_PROGRAM {
-    //     Ok(Box::new(BoopFunAmm::from_keyed_account(
-    //         keyed_account,
-    //         amm_context,
-    //     )?))
+    } else if owner == BOOP_FUN_PROGRAM {
+        Ok(Box::new(BoopFunAmm::from_keyed_account(
+            keyed_account,
+            amm_context,
+        )?))
     } else {
         Err(anyhow!(
             "Unsupported pool {}, from owner {}",

@@ -20,7 +20,7 @@ pub struct BoopFunAmm {
     bonding_curve: BondingCurve,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct BondingCurve {
     pub creator: Pubkey,
     pub mint: Pubkey,
@@ -116,6 +116,12 @@ impl BoopFunAmm {
   fn get_vault_authority(&self) -> Pubkey {
     Pubkey::find_program_address(&[b"vault_authority"], &BOOP_FUN_PROGRAM).0
   }
+}
+
+impl Clone for BoopFunAmm {
+    fn clone(&self) -> Self {
+        BoopFunAmm { key: self.key, bonding_curve: self.bonding_curve.clone() }
+    }
 }
 
 impl Amm for BoopFunAmm {
@@ -249,5 +255,9 @@ impl Amm for BoopFunAmm {
       } else {
         return Err(anyhow::anyhow!("Invalid swap params"));
       }
+    }
+
+    fn clone_amm(&self) -> Box<dyn Amm + Send + Sync> {
+        Box::new(self.clone())
     }
 }
