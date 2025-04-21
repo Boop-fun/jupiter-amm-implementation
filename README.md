@@ -19,7 +19,10 @@ Make sure your AMM is implemented and added to `amm_factory`
 
 Take a snapshot of your AMM state, this is to allow reproducible test and being able to capture edge cases
 
-`cargo run -r -- --rpc-url <RPC-URL> snapshot-amm --amm-id <AMM-ID>`
+```
+mkdir -p tests/fixtures/accounts
+cargo run -r -- --rpc-url <RPC-URL> snapshot-amm --amm-id <AMM-ID>
+```
 
 Add your amm to `test_exact_in_amms` and run the tests `cargo test`...
 

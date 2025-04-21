@@ -13,6 +13,7 @@ solana config set --url https://your-own-rpc.com
 
 #### Create a snapshot for our `INVARIANT_USDC_USDT` pool in `/jupiter-core`
 ```
+mkdir -p tests/fixtures/accounts
 cargo run snapshot-amm --amm-id <amm_id>
 cargo run snapshot-amm --amm-id BRt1iVYDNoohkL1upEb8UfHE8yji6gEDAmuN9Y4yekyc
 ```
