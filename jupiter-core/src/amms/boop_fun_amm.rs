@@ -18,4 +18,7 @@ impl BoopFunAmm {
         "BoopFun".to_string()
     }
 
+    fn program_id(&self) -> Pubkey {
+        BOOP_FUN_PROGRAM
+    }
 }
