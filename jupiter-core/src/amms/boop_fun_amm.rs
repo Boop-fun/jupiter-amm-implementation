@@ -171,11 +171,35 @@ impl Amm for BoopFunAmm {
 
           if is_buy {
             let fee_amount = self.bonding_curve.calculate_swap_fee(in_amount);
-            // TODO: Actual buy amount can be smaller
+            let max_in_amount_after_subtracting_fees = self.bonding_curve.graduation_target
+              .checked_sub(self.bonding_curve.sol_reserves)
+              .unwrap();
+            let max_in_amount_before_subtracting_fees = max_in_amount_after_subtracting_fees
+                .checked_mul(10_000u64)
+                .unwrap()
+                .checked_div(
+                    10_000u64
+                        .checked_sub(self.bonding_curve.swap_fee_basis_points as u64)
+                        .unwrap(),
+                )
+                .unwrap();
+            let in_amount_after_subtracting_fees = in_amount.checked_sub(fee_amount).unwrap();
+            let (actual_in_amount, actual_fee_amount) =
+            if in_amount_after_subtracting_fees <= max_in_amount_after_subtracting_fees {
+                (in_amount_after_subtracting_fees, fee_amount)
+            } else {
+                (
+                    max_in_amount_after_subtracting_fees,
+                    max_in_amount_before_subtracting_fees
+                        .checked_sub(max_in_amount_after_subtracting_fees)
+                        .unwrap(),
+                )
+            };
+
             Ok(Quote {
-              in_amount,
-              out_amount: self.bonding_curve.calculate_token_amount_out(in_amount.checked_sub(fee_amount).unwrap()),
-              fee_amount,
+              in_amount: actual_in_amount,
+              out_amount: self.bonding_curve.calculate_token_amount_out(actual_in_amount),
+              fee_amount: actual_fee_amount,
               fee_mint: SOL_MINT,
               fee_pct: Decimal::from(self.bonding_curve.swap_fee_basis_points),
               ..Quote::default()
