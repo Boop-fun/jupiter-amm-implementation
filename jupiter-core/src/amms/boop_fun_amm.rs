@@ -16,7 +16,7 @@ impl BoopFunAmm {
     }
 
     fn label(&self) -> String {
-        "BoopFun".to_string()
+        "boop.fun".to_string()
     }
 
     fn program_id(&self) -> Pubkey {
