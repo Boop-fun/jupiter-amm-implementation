@@ -1,7 +1,7 @@
 use anyhow::Result;
 use bincode::deserialize;
 use serde::{Serialize, Deserialize};
-use jupiter_amm_interface::{Amm, AmmContext, KeyedAccount};
+use jupiter_amm_interface::{AccountMap, Amm, AmmContext, KeyedAccount};
 use solana_sdk::pubkey;
 use solana_sdk::pubkey::Pubkey;
 
@@ -54,7 +54,13 @@ impl BoopFunAmm {
         vec![self.bonding_curve.mint, SOL_MINT]
     }
 
+    // The bonding curve keeps an internal state of the reserves without
+    // using the token accounts' balances.
     fn get_accounts_to_update(&self) -> Vec<Pubkey> {
-        vec![self.key]
+        vec![]
+    }
+
+    fn update(&mut self, account_map: &AccountMap) -> Result<()> {
+        Ok(())
     }
 }
