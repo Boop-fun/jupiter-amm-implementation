@@ -244,7 +244,6 @@ impl Amm for BoopFunAmm {
                 bonding_curve_sol_vault: self.get_bonding_curve_sol_vault(),
                 recipient_token_account: swap_params.destination_token_account,
                 buyer: swap_params.token_transfer_authority,
-                recipient: swap_params.token_transfer_authority,
                 config: self.get_config(),
                 vault_authority: self.get_vault_authority(),
                 wsol: SOL_MINT,
