@@ -10,7 +10,7 @@ use solana_sdk::system_program::ID as SYSTEM_PROGRAM_ID;
 
 use super::account_meta_from_boop_fun::{BoopFunBuyToken, BoopFunSellToken};
 
-pub const BOOP_FUN_PROGRAM: Pubkey = pubkey!("boop8hVGQGqehUK2iVEMEnMrL5RbjywRzHKBmBE7ry4");
+pub const BOOP_FUN_PROGRAM: Pubkey = pubkey!("HvWQnvwoLoFEZY7pgEjbAfxziNiaXeoqr8xBUamUpQom");
 pub const SOL_MINT: Pubkey = pubkey!("So11111111111111111111111111111111111111112");
 // 1 billion tokens
 pub const TOKEN_TOTAL_SUPPLY: u64 = 1_000_000_000_000_000_000;
