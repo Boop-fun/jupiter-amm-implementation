@@ -14,6 +14,7 @@ pub const BOOP_FUN_PROGRAM: Pubkey = pubkey!("HvWQnvwoLoFEZY7pgEjbAfxziNiaXeoqr8
 pub const SOL_MINT: Pubkey = pubkey!("So11111111111111111111111111111111111111112");
 // 1 billion tokens
 pub const TOKEN_TOTAL_SUPPLY: u64 = 1_000_000_000 * LAMPORTS_PER_SOL;
+pub const ONE_HUNDRED_PERCENT_IN_BASIS_POINTS: u64 = 10_000;
 
 pub struct BoopFunAmm {
     key: Pubkey,
@@ -91,7 +92,7 @@ impl BondingCurve {
     amount
         .checked_mul(self.swap_fee_basis_points as u64)
         .unwrap()
-        .checked_div(10_000)
+        .checked_div(ONE_HUNDRED_PERCENT_IN_BASIS_POINTS)
         .unwrap()
   }
 }
@@ -175,10 +176,10 @@ impl Amm for BoopFunAmm {
               .checked_sub(self.bonding_curve.sol_reserves)
               .unwrap();
             let max_in_amount_before_subtracting_fees = max_in_amount_after_subtracting_fees
-                .checked_mul(10_000u64)
+                .checked_mul(ONE_HUNDRED_PERCENT_IN_BASIS_POINTS)
                 .unwrap()
                 .checked_div(
-                    10_000u64
+                    ONE_HUNDRED_PERCENT_IN_BASIS_POINTS
                         .checked_sub(self.bonding_curve.swap_fee_basis_points as u64)
                         .unwrap(),
                 )
