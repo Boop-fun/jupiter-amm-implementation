@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{bail, Result};
 use bincode::deserialize;
 use rust_decimal::Decimal;
 use serde::{Serialize, Deserialize};
@@ -217,11 +217,11 @@ impl Amm for BoopFunAmm {
               ..Quote::default()
             })
           } else {
-            return Err(anyhow::anyhow!("Invalid quote params"));
+            bail!("Invalid quote params")
           }
         },
         SwapMode::ExactOut => {
-          return Err(anyhow::anyhow!("ExactOut is not supported"));
+          bail!("ExactOut is not supported")
         }
       }
     }
@@ -276,7 +276,7 @@ impl Amm for BoopFunAmm {
             .into(),
         })
       } else {
-        return Err(anyhow::anyhow!("Invalid swap params"));
+        bail!("Invalid swap params")
       }
     }
 
